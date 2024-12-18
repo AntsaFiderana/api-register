@@ -8,3 +8,6 @@ Github
 	-git pull origin
 	-git push origin
 
+Pour creer un controller api 
+	php artisan make:controller UserCtrl --api
+Pour chaque controller mamerina json izy ,avec status ,soit ok soit avec erreurs (a voir dans le projet)
