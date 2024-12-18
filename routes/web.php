@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/utilisateurs',[UtilisateurController::class,'index']);
+Route::get('api/utilisateurs',[UtilisateurController::class,'index']);
