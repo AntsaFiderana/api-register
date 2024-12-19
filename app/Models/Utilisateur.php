@@ -41,10 +41,7 @@ class Utilisateur extends Model
     public static function getToken($token)
     {
         $now=Carbon::now();
-
-        
         $utilisateurtoken =Tokenutilisateur::where('token',$token)->first();
-        
         if(!$utilisateurtoken)
         {
             return [
@@ -53,11 +50,7 @@ class Utilisateur extends Model
                 'status'=>404
             ];
         }
-
-
         $expirationdate=Carbon::parse($utilisateurtoken["expiration"]);
-     
-
         if($now->timestamp > $expirationdate->timestamp)
         {
             return [
@@ -66,7 +59,6 @@ class Utilisateur extends Model
                 'status'=>404
             ];
         }
-
         $myuser=Utilisateur::find($utilisateurtoken["idutilisateur"]);
         return [
             'success' => true,
