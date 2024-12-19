@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Token\SessionParams;
+use App\Token\TokenGenerator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Utilisateur extends Model
 {
@@ -14,5 +17,20 @@ class Utilisateur extends Model
         'isverified' => 'boolean',  
         'tentative' => 'integer'
     ];
+
+    public function createToken()
+    {
+        $token=TokenGenerator::generateToken();
+        $now=Carbon::now();
+        $tokenutilisateur=Tokenutilisateur::create(
+            [
+                'token'=>$token,
+                'idutilisateur'=>$this->id,
+                'daty'=>$now->timestamp,
+                'expiration'=>$now->addSeconds(SessionParams::$expinscription)->timestamp
+            ]
+            );
+        return $tokenutilisateur;
+    }
 
 }

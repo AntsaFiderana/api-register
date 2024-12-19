@@ -50,3 +50,6 @@ CREATE TABLE pinutilisateur(
 
 alter table utilisateur add dateinscription TIMESTAMP;
 alter table utilisateur drop idrole;
+alter table tokenutilisateur add CONSTRAINT uniquetoken UNIQUE(token);
+
+drop table role;

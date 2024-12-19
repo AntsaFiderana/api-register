@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ValidationEmail;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -36,18 +37,20 @@ class UserCtrl extends Controller
             $request->validate([
                 'email' => 'required|email|unique:utilisateur,email',
                 'nom' => 'required|string',
-                'mdp1' => 'required|string|min:6|confirmed',
-                'mdp2'=>'required|string|min:6|confirmed',
+                'mdp1' => 'required|string|min:6',
+                'mdp2'=>'required|string|min:6',
+               
             ]);
     
             $utilisateur = Utilisateur::create([
                 'email' => $request->email,
                 'nom' => $request->nom,
                 'mdp' => bcrypt($request->mdp1),
-                'dateinscription'=>'0'
+                'dateinscription'=>Carbon::now()->toDateTimeString(),
+                 'isverified'=>false
             ]);
 
-
+            $tokenutilisateur=$utilisateur->createToken();
             $url = route('', ['id' => $utilisateur->id]);
             //Mail::to($utilisateur->email)->send(new ValidationEmail($utilisateur,$url));
             return response()->json([
