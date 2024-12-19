@@ -16,17 +16,33 @@ class UserCtrl extends Controller
      */
     public function index()
     {
+        
         //
     }
 
     /**
     * 
     * Validation email
-     */
-    /*public function validateEmail($token)
+    */
+    public function validateEmail($token)
     {
-        $myuser=Utilisateur::where();
-    }*/
+        $result=Utilisateur::getToken($token);
+        if(!$result["success"])
+        {
+            return response()->json($result);
+        }
+        $verifieduser=$result["user"];
+        $verifieduser->isverified=true;
+        $verifieduser->save();
+        return response()->json([
+                'success'=>true,
+                'message'=>"Utilisateur $verifieduser->email a bien ete confirme ",
+                'status'=>200
+            ]
+            ,200);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -51,12 +67,15 @@ class UserCtrl extends Controller
             ]);
 
             $tokenutilisateur=$utilisateur->createToken();
-            echo "huhu";
-            $url = route('', ['id' => $utilisateur->id]);
-            //Mail::to($utilisateur->email)->send(new ValidationEmail($utilisateur,$url));
+            
+            $url = route('confirmEmail', ['token' => $tokenutilisateur->token]);
+            echo $url;
+            
+            Mail::to($utilisateur->email)->send(new ValidationEmail($utilisateur,$url));
+
+
             return response()->json([
                 'message' => 'Un e-mail de validation a été envoyé. Veuillez vérifier votre boîte de réception.',
-                'user' => $utilisateur,
                 'status' => 200,
             ], 200);
          

@@ -33,4 +33,45 @@ class Utilisateur extends Model
         return $tokenutilisateur;
     }
 
+    public function tokens()
+    {
+        return $this->hasMany(Tokenutilisateur::class,'idutilisateur');
+    }
+
+    public static function getToken($token)
+    {
+        $now=Carbon::now();
+
+        
+        $utilisateurtoken =Tokenutilisateur::where('token',$token)->first();
+        
+        if(!$utilisateurtoken)
+        {
+            return [
+                'success' => false,
+                'message' => "Le token $token  n\'appartient à aucun utilisateur.",
+                'status'=>404
+            ];
+        }
+
+
+        $expirationdate=Carbon::parse($utilisateurtoken["expiration"]);
+     
+
+        if($now->timestamp > $expirationdate->timestamp)
+        {
+            return [
+                'success'=>false,
+                'message'=>"Votre session a expiré",
+                'status'=>404
+            ];
+        }
+
+        $myuser=Utilisateur::find($utilisateurtoken["idutilisateur"]);
+        return [
+            'success' => true,
+            'user'=> $myuser,
+            'status'=>200
+        ];
+    }
 }

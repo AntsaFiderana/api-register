@@ -3,6 +3,6 @@ namespace App\Token;
 class SessionParams
 {
 	//tous en seconds
-	public static $expinscription=60;
+	public static $expinscription=360;
 }
 ?>

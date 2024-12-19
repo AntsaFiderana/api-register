@@ -24,7 +24,7 @@ class ValidationEmail extends Mailable
         return $this->subject('Verification compte')
                     ->view('emails.validation')
                     ->with([
-                        'url' => $this->url,  
+                        'url' => $this->url,  // Passez l'URL dans la vue
                     ]);
     }
 }
