@@ -51,6 +51,7 @@ class UserCtrl extends Controller
             ]);
 
             $tokenutilisateur=$utilisateur->createToken();
+            echo "huhu";
             $url = route('', ['id' => $utilisateur->id]);
             //Mail::to($utilisateur->email)->send(new ValidationEmail($utilisateur,$url));
             return response()->json([

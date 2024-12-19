@@ -26,8 +26,8 @@ class Utilisateur extends Model
             [
                 'token'=>$token,
                 'idutilisateur'=>$this->id,
-                'daty'=>$now->timestamp,
-                'expiration'=>$now->addSeconds(SessionParams::$expinscription)->timestamp
+                'daty'=>$now->toDateTimeString(),
+                'expiration'=>$now->addSeconds(SessionParams::$expinscription)->toDayDateTimeString()
             ]
             );
         return $tokenutilisateur;
